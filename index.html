@@ -5,155 +5,343 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>David — Coding & Gaming</title>
   <meta name="description" content="David's personal site — coding, gaming, Python, and small creative projects." />
+
   <style>
     :root{
-      --bg:#0b1020;
-      --card:#121a33;
-      --text:#e8ecff;
-      --muted:#b7c0ff;
-      --accent:#7c5cff;
-      --accent2:#32d6ff;
+      --bg:#070a14;
+      --card: rgba(14, 20, 45, .62);
+      --card2: rgba(11, 16, 35, .45);
+      --text:#eaf0ff;
+      --muted:#aeb9ff;
       --border: rgba(255,255,255,.10);
-      --shadow: 0 18px 60px rgba(0,0,0,.35);
-      --radius: 18px;
-      --max: 1040px;
+      --shadow: 0 22px 80px rgba(0,0,0,.45);
+
+      --a1:#7c5cff;
+      --a2:#32d6ff;
+
+      --radius: 20px;
+      --max: 1080px;
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(900px 450px at 15% 0%, rgba(124,92,255,.35), transparent 55%),
-                  radial-gradient(700px 380px at 85% 10%, rgba(50,214,255,.25), transparent 55%),
-                  var(--bg);
       color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      line-height:1.6;
+
+      background:
+        radial-gradient(900px 520px at 10% 0%, rgba(124,92,255,.35), transparent 60%),
+        radial-gradient(800px 520px at 92% 12%, rgba(50,214,255,.22), transparent 58%),
+        radial-gradient(900px 600px at 50% 110%, rgba(124,92,255,.18), transparent 60%),
+        linear-gradient(180deg, #050711 0%, #070a14 50%, #050711 100%);
+      overflow-x:hidden;
     }
+
     a{color:inherit;text-decoration:none}
-    .wrap{max-width:var(--max);margin:auto;padding:28px 18px 64px}
+    button{font:inherit}
+
+    /* subtle animated grain */
+    .grain{
+      pointer-events:none;
+      position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
+      opacity:.22;
+    }
+
     header{
-      position:sticky;top:0;z-index:50;
-      backdrop-filter: blur(12px);
-      background: rgba(11,16,32,.75);
-      border-bottom:1px solid var(--border);
+      position:sticky; top:0; z-index:50;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(to bottom, rgba(7,10,20,.78), rgba(7,10,20,.42));
+      backdrop-filter: blur(14px);
     }
+
     .bar{
-      max-width:var(--max);margin:auto;
+      max-width:var(--max);
+      margin:0 auto;
       padding:14px 18px;
-      display:flex;justify-content:space-between;align-items:center;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
     }
-    .brand{font-weight:700;display:flex;gap:10px;align-items:center}
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      font-weight:800; letter-spacing:.2px;
+      white-space:nowrap;
+    }
     .logo{
-      width:36px;height:36px;border-radius:12px;
-      background: linear-gradient(135deg,var(--accent),var(--accent2));
+      width:40px;height:40px;border-radius:14px;
+      background: conic-gradient(from 180deg, var(--a1), var(--a2), var(--a1));
+      box-shadow: 0 14px 45px rgba(124,92,255,.24);
+      position:relative;
     }
-    nav{display:flex;gap:10px}
+    .logo:after{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius:16px;
+      background: linear-gradient(135deg, rgba(124,92,255,.55), rgba(50,214,255,.35));
+      filter: blur(10px);
+      opacity:.35;
+      z-index:-1;
+    }
+
+    nav{
+      display:flex; gap:10px;
+      padding:6px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+      border-radius: 999px;
+    }
+
     .tab{
-      padding:8px 12px;border-radius:12px;
+      padding:8px 12px;
+      border-radius:999px;
       border:1px solid transparent;
       color:var(--muted);
+      background: transparent;
       cursor:pointer;
+      transition: .18s ease;
+    }
+    .tab:hover{
+      color:var(--text);
+      background: rgba(255,255,255,.06);
     }
     .tab[aria-selected="true"]{
-      border-color:var(--accent);
       color:var(--text);
-      background:rgba(124,92,255,.12);
+      border-color: rgba(124,92,255,.55);
+      background: linear-gradient(135deg, rgba(124,92,255,.18), rgba(50,214,255,.10));
+      box-shadow: 0 10px 30px rgba(124,92,255,.12);
     }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 26px 18px 64px;
+      min-height: calc(100vh - 78px);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    @media (max-width: 880px){ .hero{grid-template-columns:1fr;} nav{flex-wrap:wrap; border-radius:18px;} }
+
     .card{
-      background:rgba(18,26,51,.6);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:20px;
-      margin-top:18px;
+      position:relative;
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      overflow:hidden;
     }
-    h1{font-size:clamp(28px,4vw,44px)}
-    h2{margin-top:0}
-    .chips{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+    /* glowing border */
+    .card:before{
+      content:"";
+      position:absolute; inset:-1px;
+      border-radius: calc(var(--radius) + 1px);
+      background: linear-gradient(135deg, rgba(124,92,255,.35), rgba(50,214,255,.20), rgba(255,255,255,.08));
+      opacity:.45;
+      filter: blur(18px);
+      z-index:0;
+    }
+    .card > *{position:relative; z-index:1}
+
+    .card.hover:hover{
+      transform: translateY(-2px);
+      transition: .2s ease;
+      border-color: rgba(255,255,255,.16);
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(30px, 3.8vw, 48px);
+      line-height:1.1;
+    }
+    .sub{
+      margin:0 0 14px;
+      color:var(--muted);
+      font-size: 16.5px;
+    }
+
+    .chips{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0 6px}
     .chip{
-      padding:8px 12px;border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.05);
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
       font-size:14px;
+      color: rgba(234,240,255,.92);
     }
-    section{display:none}
-    section.active{display:block}
-    footer{text-align:center;margin-top:30px;color:var(--muted);font-size:13px}
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background: linear-gradient(135deg, var(--a1), var(--a2));
+      box-shadow: 0 0 18px rgba(50,214,255,.18);
+    }
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
     .btn{
-      display:inline-block;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
       padding:10px 14px;
       border-radius:14px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.05);
-      font-weight:600;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      font-weight:700;
+      transition:.18s ease;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.07)}
+    .btn.primary{
+      border-color: rgba(50,214,255,.35);
+      background: linear-gradient(135deg, rgba(50,214,255,.18), rgba(124,92,255,.16));
+    }
+
+    .mini{display:grid; gap:12px}
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding: 14px 14px;
+    }
+    .stat b{display:block; font-size:13px; color:var(--muted)}
+    .stat span{display:block; font-size:18px; font-weight:800; margin-top:4px}
+
+    main{flex:1}
+    section{
+      display:none;
+      animation: fade .18s ease;
+    }
+    section.active{display:block}
+    @keyframes fade { from {opacity:0; transform:translateY(4px)} to {opacity:1; transform:translateY(0)} }
+
+    h2{margin:0 0 10px; font-size:22px}
+    .muted{color:var(--muted)}
+
+    .divider{
+      height:1px; background: rgba(255,255,255,.08);
+      margin: 14px 0;
+    }
+
+    footer{
+      text-align:center;
+      color: rgba(174,185,255,.75);
+      font-size: 13px;
+      padding-top: 10px;
+    }
+
+    /* nicer spacing on very wide screens */
+    @media (min-width: 1200px){
+      .wrap{padding-top:34px}
     }
   </style>
 </head>
 
 <body>
+<div class="grain" aria-hidden="true"></div>
+
 <header>
   <div class="bar">
     <div class="brand">
-      <div class="logo"></div>
-      David · Coding & Gaming
+      <div class="logo" aria-hidden="true"></div>
+      <div>David <span style="color:var(--muted); font-weight:700;">· Coding & Gaming</span></div>
     </div>
-    <nav>
-      <button class="tab" aria-selected="true" data-target="about">About</button>
-      <button class="tab" aria-selected="false" data-target="projects">My Projects</button>
-      <button class="tab" aria-selected="false" data-target="contact">Contact</button>
+
+    <nav aria-label="Primary">
+      <button class="tab" role="tab" aria-selected="true" data-target="about">About</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="projects">My Projects</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="contact">Contact</button>
     </nav>
   </div>
 </header>
 
 <div class="wrap">
-  <div class="card">
-    <h1>Hi, I’m David 👋</h1>
-    <p>
-      I’m a coding passionate with around <b>10 years of learning experience</b>.
-      I mostly code in <b>Python</b>, enjoy gaming, and like experimenting with
-      game mechanics, automation, and creative ideas.
-    </p>
+  <div class="hero">
+    <div class="card hover">
+      <h1>Hi, I’m David 👋</h1>
+      <p class="sub">
+        I’m a coding passionate with around <b>10 years</b> of learning experience.
+        I mostly code in <b>Python</b>, enjoy gaming, and like experimenting with game mechanics, automation, and small creative projects.
+      </p>
 
-    <div class="chips">
-      <span class="chip">🐍 Python</span>
-      <span class="chip">🎮 Gaming</span>
-      <span class="chip">⚙️ Automation</span>
-      <span class="chip">🧠 Learning</span>
+      <div class="chips" aria-label="Interests">
+        <span class="chip"><span class="dot"></span>Python</span>
+        <span class="chip"><span class="dot"></span>Gaming</span>
+        <span class="chip"><span class="dot"></span>Automation</span>
+        <span class="chip"><span class="dot"></span>Learning</span>
+      </div>
+
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/DavidtheD3veloper" target="_blank" rel="noreferrer">
+          GitHub · @DavidtheD3veloper <span aria-hidden="true">↗</span>
+        </a>
+        <a class="btn" href="#projects" id="jumpProjects">See projects</a>
+      </div>
     </div>
 
-    <a class="btn" href="https://github.com/DavidtheD3veloper" target="_blank">
-      GitHub · @DavidtheD3veloper ↗
-    </a>
+    <div class="card hover mini" aria-label="Quick facts">
+      <div class="stat">
+        <b>Experience</b>
+        <span>~10 years learning</span>
+      </div>
+      <div class="stat">
+        <b>Main focus</b>
+        <span>Python + games</span>
+      </div>
+      <div class="stat">
+        <b>Personal</b>
+        <span>Has a girlfriend ❤️</span>
+      </div>
+      <div class="stat">
+        <b>What I post</b>
+        <span>Games & programs</span>
+      </div>
+    </div>
   </div>
 
   <main>
-    <section id="about" class="active">
-      <div class="card">
+    <section id="about" class="active" aria-label="About section">
+      <div class="card hover">
         <h2>About Me</h2>
         <p>
-          I enjoy building things, learning new technologies, and improving my skills step by step.
-          Coding and gaming are my main passions, and I love combining them in small projects.
+          I’m always curious about learning new technologies and improving my skills.
+          I enjoy combining my love for coding and gaming by experimenting with game mechanics, automation, and small creative projects.
         </p>
+        <div class="divider"></div>
         <p>
           I also have a <b>girlfriend</b>, and I love her very much ❤️.
         </p>
       </div>
     </section>
 
-    <section id="projects">
-      <div class="card">
+    <section id="projects" aria-label="Projects section">
+      <div class="card hover">
         <h2>My Projects</h2>
-        <p><i>*No projects yet :( *</i></p>
+        <p class="muted"><i>*No projects yet :( *</i></p>
+        <div class="divider"></div>
+        <p class="muted">
+          When you add repos, you can list them here with titles, short descriptions, and links.
+        </p>
       </div>
     </section>
 
-    <section id="contact">
-      <div class="card">
+    <section id="contact" aria-label="Contact section">
+      <div class="card hover">
         <h2>Contact</h2>
-        <p>
-          Best way to reach me is on GitHub:
-        </p>
-        <a class="btn" href="https://github.com/DavidtheD3veloper" target="_blank">
-          @DavidtheD3veloper
-        </a>
+        <p class="muted">Best way to reach me is on GitHub:</p>
+        <div class="actions">
+          <a class="btn primary" href="https://github.com/DavidtheD3veloper" target="_blank" rel="noreferrer">
+            @DavidtheD3veloper <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </div>
     </section>
   </main>
@@ -164,19 +352,30 @@
 </div>
 
 <script>
-  const tabs = document.querySelectorAll(".tab");
-  const sections = document.querySelectorAll("main section");
+  const tabs = [...document.querySelectorAll(".tab")];
+  const sections = [...document.querySelectorAll("main section")];
 
-  function activate(id){
-    tabs.forEach(t=>t.setAttribute("aria-selected", t.dataset.target===id));
-    sections.forEach(s=>s.classList.toggle("active", s.id===id));
+  function setActive(id){
+    tabs.forEach(t => t.setAttribute("aria-selected", String(t.dataset.target === id)));
+    sections.forEach(s => s.classList.toggle("active", s.id === id));
+    history.replaceState(null, "", "#" + id);
   }
 
-  tabs.forEach(t=>{
-    t.onclick=()=>activate(t.dataset.target);
+  tabs.forEach(t => t.addEventListener("click", () => {
+    setActive(t.dataset.target);
+    document.getElementById(t.dataset.target)?.scrollIntoView({behavior:"smooth", block:"start"});
+  }));
+
+  document.getElementById("jumpProjects")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    setActive("projects");
+    document.getElementById("projects")?.scrollIntoView({behavior:"smooth", block:"start"});
   });
 
-  document.getElementById("year").textContent=new Date().getFullYear();
+  const hash = (location.hash || "#about").replace("#","");
+  if (document.getElementById(hash)) setActive(hash);
+
+  document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
